@@ -1007,12 +1007,19 @@ body.light-theme .modal-desc { color: #334155; }
   .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
   .footer-desc { max-width: 100%; }
   .footer-links {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
   }
 
   .footer-copy {
-    align-items: flex-start;
+    justify-content: center;
+    align-items: center;
     flex-direction: column;
+    text-align: center;
+  }
+
+  .made-by {
+    justify-content: center;
   }
 }
 
@@ -1118,5 +1125,9 @@ body.light-theme .modal-desc { color: #334155; }
 
   .footer-links {
     gap: 1.5rem;
+  }
+
+  .footer-copy span {
+    text-align: center;
   }
 }
