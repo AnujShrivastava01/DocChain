@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>DocChain — Blockchain Document Integrity</title>
+  <link rel="icon" type="image/png" href="logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css"/>
@@ -17,16 +18,7 @@
   <header>
     <div class="logo">
       <div class="logo-icon">
-        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-          <rect x="2" y="2" width="10" height="10" rx="1" fill="var(--accent)"/>
-          <rect x="16" y="2" width="10" height="10" rx="1" fill="var(--accent)" opacity="0.5"/>
-          <rect x="2" y="16" width="10" height="10" rx="1" fill="var(--accent)" opacity="0.5"/>
-          <rect x="16" y="16" width="10" height="10" rx="1" fill="var(--accent)"/>
-          <line x1="12" y1="7" x2="16" y2="7" stroke="var(--accent)" stroke-width="1.5"/>
-          <line x1="7" y1="12" x2="7" y2="16" stroke="var(--accent)" stroke-width="1.5"/>
-          <line x1="21" y1="12" x2="21" y2="16" stroke="var(--accent)" stroke-width="1.5"/>
-          <line x1="12" y1="21" x2="16" y2="21" stroke="var(--accent)" stroke-width="1.5"/>
-        </svg>
+        <img src="logo.png" alt="DocChain Logo" id="headerLogo">
       </div>
       <span class="logo-text">DocChain</span>
     </div>
@@ -423,9 +415,35 @@
 
   <!-- FOOTER -->
   <footer>
-    <div class="footer-inner">
-      <span>DocChain · SHA-256 Blockchain Document Integrity</span>
-      <span>All processing is done locally in your browser. No files are uploaded to any server.</span>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo">
+          <img src="logo.png" alt="DocChain Logo" class="footer-logo">
+          <span class="logo-text">DocChain</span>
+        </div>
+        <p class="footer-desc">DocChain is a high-assurance document integrity platform. We utilize SHA-256 cryptographic hashing and decentralized ledger principles to provide immutable proof of authenticity for your digital assets. All processing is strictly local, ensuring total privacy and security.</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>Platform</h4>
+          <a href="#generate" onclick="switchTab('generate')">Generate Seal</a>
+          <a href="#verify" onclick="switchTab('verify')">Verify Integrity</a>
+          <a href="#compare" onclick="switchTab('compare')">QR Comparison</a>
+        </div>
+        <div class="footer-col">
+          <h4>Technical</h4>
+          <a href="#process" onclick="switchTab('process')">Execution Pipeline</a>
+          <a href="Security.md">Security & Privacy</a>
+          <a href="Pipeline.md">System Logic</a>
+          <a href="README.md">GitHub Repo</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">
+        <span>&copy; 2026 DocChain · Cryptographic Trust System</span>
+        <span class="made-by">Made with precision by <span class="author">Anuj</span></span>
+      </div>
     </div>
   </footer>
 
