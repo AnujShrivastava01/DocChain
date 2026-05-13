@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DocChain — Blockchain Document Integrity</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css"/>
+  <!-- QR Scanning Library -->
+  <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
+</head>
+<body class="dark-theme">
+  <div class="noise"></div>
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo">
+      <div class="logo-icon">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <rect x="2" y="2" width="10" height="10" rx="1" fill="var(--accent)"/>
+          <rect x="16" y="2" width="10" height="10" rx="1" fill="var(--accent)" opacity="0.5"/>
+          <rect x="2" y="16" width="10" height="10" rx="1" fill="var(--accent)" opacity="0.5"/>
+          <rect x="16" y="16" width="10" height="10" rx="1" fill="var(--accent)"/>
+          <line x1="12" y1="7" x2="16" y2="7" stroke="var(--accent)" stroke-width="1.5"/>
+          <line x1="7" y1="12" x2="7" y2="16" stroke="var(--accent)" stroke-width="1.5"/>
+          <line x1="21" y1="12" x2="21" y2="16" stroke="var(--accent)" stroke-width="1.5"/>
+          <line x1="12" y1="21" x2="16" y2="21" stroke="var(--accent)" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <span class="logo-text">DocChain</span>
+    </div>
+    <nav>
+      <a href="#generate" class="nav-link active" onclick="switchTab('generate')">Generate</a>
+      <a href="#verify" class="nav-link" onclick="switchTab('verify')">Verify</a>
+      <a href="#compare" class="nav-link" onclick="switchTab('compare')">Compare QR</a>
+      <a href="#comparison" class="nav-link" onclick="switchTab('comparison')">Comparison</a>
+      <a href="#process" class="nav-link" onclick="switchTab('process')">Process</a>
+    </nav>
+    <div class="header-actions">
+      <button id="themeToggle" class="theme-btn" onclick="toggleTheme()" title="Toggle Theme">
+        <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+        <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+      </button>
+      <div class="header-badge">SHA-256 · Blockchain</div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+
+  <!-- HERO -->
+  <section class="hero" id="heroSection">
+    <div class="hero-tag">High-Assurance Document Verification</div>
+    <h1>Verify Authenticity<br/><span class="accent-text">With Cryptographic Proof</span></h1>
+    <p class="hero-sub">DocChain leverages SHA-256 industrial-grade hashing and decentralized ledger principles to ensure your documents remain immutable. Establish an unbreakable chain of trust for every digital asset.</p>
+    <div class="chain-visual">
+      <div class="block">DOC</div>
+      <div class="chain-link">→</div>
+      <div class="block">SHA-256</div>
+      <div class="chain-link">→</div>
+      <div class="block">HASH</div>
+      <div class="chain-link">→</div>
+      <div class="block accent-block">QR</div>
+    </div>
+  </section>
+
+  <!-- TABS CONTAINER -->
+  <main>
+    <!-- GENERATE TAB -->
+    <section id="tab-generate" class="tab-panel active">
+      <div class="panel-grid">
+
+        <!-- Upload Area -->
+        <div class="card upload-card">
+          <div class="card-label">01 — Upload Document</div>
+          <div class="drop-zone" id="dropZone" onclick="document.getElementById('pdfInput').click()">
+            <div class="drop-icon">
+              <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                <rect x="8" y="4" width="24" height="32" rx="2" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="4 2"/>
+                <path d="M32 4L40 12" stroke="var(--accent)" stroke-width="1.5"/>
+                <rect x="32" y="4" width="8" height="8" rx="1" fill="var(--accent)" opacity="0.3"/>
+                <path d="M20 26L20 38M20 38L15 33M20 38L25 33" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <p class="drop-text">Drop PDF here or <span class="link-text">click to browse</span></p>
+            <p class="drop-sub">Supports PDF files · Max 50MB</p>
+            <input type="file" id="pdfInput" accept=".pdf" style="display:none" onchange="handleFileUpload(this.files[0])"/>
+          </div>
+          <div class="file-info" id="fileInfo" style="display:none">
+            <div class="file-info-row">
+              <span class="file-name" id="fileName"></span>
+              <span class="file-size" id="fileSize"></span>
+            </div>
+            <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+          </div>
+        </div>
+
+        <!-- Hash Result -->
+        <div class="card hash-card">
+          <div class="card-label">02 — SHA-256 Hash</div>
+          <div class="hash-display" id="hashDisplay">
+            <div class="hash-placeholder">
+              <div class="hash-dots">
+                <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+              </div>
+              <p>Awaiting document...</p>
+            </div>
+          </div>
+          <div class="hash-meta" id="hashMeta" style="display:none">
+            <div class="meta-row"><span class="meta-key">Algorithm</span><span class="meta-val">SHA-256</span></div>
+            <div class="meta-row"><span class="meta-key">Timestamp</span><span class="meta-val" id="metaTime"></span></div>
+            <div class="meta-row"><span class="meta-key">Block ID</span><span class="meta-val" id="metaBlock"></span></div>
+            <div class="meta-row"><span class="meta-key">Chain Depth</span><span class="meta-val" id="metaDepth"></span></div>
+          </div>
+        </div>
+
+        <!-- QR Code -->
+        <div class="card qr-card">
+          <div class="card-label">03 — QR Seal</div>
+          <div class="qr-container" id="qrContainer">
+            <div class="qr-placeholder">
+              <div class="qr-grid"></div>
+              <p>QR seal generated after hashing</p>
+            </div>
+          </div>
+          <div class="qr-actions" id="qrActions" style="display:none">
+            <button class="btn-primary" onclick="downloadQR()">↓ Download QR</button>
+            <button class="btn-secondary" onclick="downloadReport()">↓ Full Report</button>
+          </div>
+        </div>
+
+        <!-- Blockchain Record -->
+        <div class="card chain-card">
+          <div class="card-label">04 — Blockchain Record</div>
+          <div class="blockchain-viz" id="chainViz">
+            <div class="chain-empty">
+              <p>Blockchain record will appear here after document processing</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="generate-btn-wrap">
+        <button class="btn-generate small-btn" id="generateBtn" onclick="generateHash()" disabled>
+          <span class="btn-icon">⬡</span>
+          Execute Secure Seal
+        </button>
+      </div>
+    </section>
+
+    <!-- VERIFY TAB -->
+    <section id="tab-verify" class="tab-panel">
+      <div class="verify-intro">
+        <h2>Integrity Validation</h2>
+        <p>Analyze and compare document fingerprints. Any discrepancy between the hashes indicates unauthorized modification or data corruption.</p>
+      </div>
+
+      <div class="verify-grid">
+        <div class="card verify-card">
+          <div class="card-label">Original Document</div>
+          <div class="drop-zone small" onclick="document.getElementById('origInput').click()">
+            <div class="drop-icon small-icon">
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                <rect x="4" y="2" width="16" height="22" rx="1.5" stroke="var(--accent)" stroke-width="1.5"/>
+                <path d="M20 2L28 10" stroke="var(--accent)" stroke-width="1.5"/>
+                <rect x="20" y="2" width="8" height="8" rx="1" fill="var(--accent)" opacity="0.25"/>
+                <path d="M8 13H16M8 17H13" stroke="var(--accent)" stroke-width="1.2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <p class="drop-text small-text">Upload <span class="link-text">Original PDF</span></p>
+            <input type="file" id="origInput" accept=".pdf" style="display:none" onchange="handleVerifyUpload(this.files[0], 'orig')"/>
+          </div>
+          <div class="verify-hash-box" id="origHashBox">
+            <span class="verify-hash-label">SHA-256</span>
+            <span class="verify-hash-val" id="origHash">—</span>
+          </div>
+        </div>
+
+        <div class="vs-divider">
+          <div class="vs-line"></div>
+          <div class="vs-circle" id="vsCircle">VS</div>
+          <div class="vs-line"></div>
+        </div>
+
+        <div class="card verify-card">
+          <div class="card-label">Document to Verify</div>
+          <div class="drop-zone small" onclick="document.getElementById('checkInput').click()">
+            <div class="drop-icon small-icon">
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                <rect x="4" y="2" width="16" height="22" rx="1.5" stroke="#ff6b6b" stroke-width="1.5"/>
+                <path d="M20 2L28 10" stroke="#ff6b6b" stroke-width="1.5"/>
+                <rect x="20" y="2" width="8" height="8" rx="1" fill="#ff6b6b" opacity="0.25"/>
+                <path d="M8 13H16M8 17H13" stroke="#ff6b6b" stroke-width="1.2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <p class="drop-text small-text">Upload <span class="link-text red-link">Document to Check</span></p>
+            <input type="file" id="checkInput" accept=".pdf" style="display:none" onchange="handleVerifyUpload(this.files[0], 'check')"/>
+          </div>
+          <div class="verify-hash-box" id="checkHashBox">
+            <span class="verify-hash-label">SHA-256</span>
+            <span class="verify-hash-val" id="checkHash">—</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="verify-btn-wrap">
+        <button class="btn-generate small-btn" id="verifyBtn" onclick="verifyDocuments()" disabled>
+          <span class="btn-icon">⬡</span>
+          Compare & Verify
+        </button>
+      </div>
+
+      <div class="verify-result" id="verifyResult" style="display:none">
+        <div class="result-card" id="resultCard">
+          <div class="result-icon" id="resultIcon"></div>
+          <div class="result-text">
+            <h3 id="resultTitle"></h3>
+            <p id="resultDesc"></p>
+          </div>
+          <div class="result-hashes" id="resultHashes"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMPARE QR TAB -->
+    <section id="tab-compare" class="tab-panel">
+      <div class="verify-intro">
+        <h2>Compare QR Code Seals</h2>
+        <p>Extract and compare metadata from two document QR seals to verify they originate from the same source.</p>
+      </div>
+
+      <div class="verify-grid">
+        <div class="card verify-card">
+          <div class="card-label">First QR Seal</div>
+          <div class="drop-zone small" onclick="document.getElementById('qrInput1').click()">
+            <div class="drop-icon small-icon">
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                <rect x="4" y="4" width="24" height="24" rx="2" stroke="var(--accent)" stroke-width="1.5"/>
+                <rect x="8" y="8" width="6" height="6" fill="var(--accent)"/>
+                <rect x="18" y="8" width="6" height="6" fill="var(--accent)"/>
+                <rect x="8" y="18" width="6" height="6" fill="var(--accent)"/>
+              </svg>
+            </div>
+            <p class="drop-text small-text">Upload <span class="link-text">QR Image 1</span></p>
+            <input type="file" id="qrInput1" accept="image/*" style="display:none" onchange="handleQRUpload(this.files[0], 1)"/>
+          </div>
+          <div class="qr-preview-box" id="qrPreview1"></div>
+          <div class="verify-hash-box" id="qrDataBox1">
+            <span class="verify-hash-label">Decoded Hash</span>
+            <span class="verify-hash-val" id="qrHash1">—</span>
+          </div>
+        </div>
+
+        <div class="vs-divider">
+          <div class="vs-line"></div>
+          <div class="vs-circle" id="vsCircleQR">VS</div>
+          <div class="vs-line"></div>
+        </div>
+
+        <div class="card verify-card">
+          <div class="card-label">Second QR Seal</div>
+          <div class="drop-zone small" onclick="document.getElementById('qrInput2').click()">
+            <div class="drop-icon small-icon">
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                <rect x="4" y="4" width="24" height="24" rx="2" stroke="var(--accent)" stroke-width="1.5"/>
+                <rect x="8" y="8" width="6" height="6" fill="var(--accent)"/>
+                <rect x="18" y="8" width="6" height="6" fill="var(--accent)"/>
+                <rect x="8" y="18" width="6" height="6" fill="var(--accent)"/>
+              </svg>
+            </div>
+            <p class="drop-text small-text">Upload <span class="link-text">QR Image 2</span></p>
+            <input type="file" id="qrInput2" accept="image/*" style="display:none" onchange="handleQRUpload(this.files[0], 2)"/>
+          </div>
+          <div class="qr-preview-box" id="qrPreview2"></div>
+          <div class="verify-hash-box" id="qrDataBox2">
+            <span class="verify-hash-label">Decoded Hash</span>
+            <span class="verify-hash-val" id="qrHash2">—</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="verify-btn-wrap">
+        <button class="btn-generate small-btn" id="compareQRBtn" onclick="compareQRs()" disabled>
+          <span class="btn-icon">⬡</span>
+          Compare QR Seals
+        </button>
+      </div>
+
+      <div class="verify-result" id="qrCompareResult" style="display:none">
+        <div class="result-card" id="qrResultCard">
+          <div class="result-icon" id="qrResultIcon"></div>
+          <div class="result-text">
+            <h3 id="qrResultTitle"></h3>
+            <p id="qrResultDesc"></p>
+          </div>
+          <div class="result-details" id="qrResultDetails"></div>
+        </div>
+      </div>
+    </section>
+
+    </section>
+
+    <!-- COMPARISON TAB -->
+    <section id="tab-comparison" class="tab-panel">
+      <div class="comparison-page">
+        <div class="process-header">
+          <div class="hero-tag">Protocol Analysis</div>
+          <h2>Verification Comparison</h2>
+          <p>Choosing the right cryptographic methodology for your integrity audit.</p>
+        </div>
+
+        <div class="comparison-table-wrap">
+          <table class="ver-table">
+            <thead>
+              <tr>
+                <th>Parameter</th>
+                <th>File-to-File Matching</th>
+                <th>QR Cryptographic Audit</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="p-name">Primary Source</span></td>
+                <td>Raw Binary Blob (PDF)</td>
+                <td>Encoded Metadata (JSON)</td>
+              </tr>
+              <tr>
+                <td><span class="p-name">Medium</span></td>
+                <td>Digital-to-Digital</td>
+                <td>Digital-to-Physical</td>
+              </tr>
+              <tr>
+                <td><span class="p-name">Tamper Detection</span></td>
+                <td>100% (Single-bit sensitive)</td>
+                <td>High (Metadata anchored)</td>
+              </tr>
+              <tr>
+                <td><span class="p-name">Offline Mode</span></td>
+                <td>Requires Source Parity</td>
+                <td>Fully Independent Seal</td>
+              </tr>
+              <tr>
+                <td><span class="p-name">Core Engine</span></td>
+                <td>SubtleCrypto SHA-256</td>
+                <td>jsQR Decode + Hash Match</td>
+              </tr>
+              <tr>
+                <td><span class="p-name">Zero-Knowledge</span></td>
+                <td>Yes (Client-only)</td>
+                <td>Yes (Client-only)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="process-header" style="margin-top: 3rem; margin-bottom: 1.5rem;">
+          <div class="hero-tag">Data Schema</div>
+          <h3>Audit Field Validation</h3>
+          <p>The specific parameters analyzed to determine document integrity.</p>
+        </div>
+
+        <div class="comparison-table-wrap">
+          <table class="ver-table">
+            <thead>
+              <tr>
+                <th>Field</th>
+                <th>Validation Logic</th>
+                <th>Status Mapping</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="p-name">Document Hash</span></td>
+                <td>SHA-256 Bit-State Alignment</td>
+                <td><span class="status-badge critical">CRITICAL</span></td>
+              </tr>
+              <tr>
+                <td><span class="p-name">File Name</span></td>
+                <td>String Parity Check</td>
+                <td><span class="status-badge info">INFO</span></td>
+              </tr>
+              <tr>
+                <td><span class="p-name">Timestamp</span></td>
+                <td>Genesis vs current drift</td>
+                <td><span class="status-badge verified">VERIFIED</span></td>
+              </tr>
+              <tr>
+                <td><span class="p-name">Block ID</span></td>
+                <td>Ledger position anchor</td>
+                <td><span class="status-badge immutable">IMMUTABLE</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="process-header" style="margin-top: 3rem; margin-bottom: 1.5rem;">
+          <div class="hero-tag">Help Center</div>
+          <h3>Why did matching fail?</h3>
+          <p>Common reasons why a document might not match its original seal.</p>
+        </div>
+
+        <div class="comparison-table-wrap">
+          <table class="ver-table">
+            <thead>
+              <tr>
+                <th>Scenario</th>
+                <th>Simple Reason</th>
+                <th>Final Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="p-name" style="color:var(--danger)">Document Edited</span></td>
+                <td>A word, date, or character was changed</td>
+                <td><span class="status-badge critical">FAILED</span></td>
+              </tr>
+              <tr>
+                <td><span class="p-name" style="color:var(--danger)">File Re-Saved</span></td>
+                <td>The file was "Saved As" or re-exported</td>
+                <td><span class="status-badge critical">TAMPERED</span></td>
+              </tr>
+              <tr>
+                <td><span class="p-name" style="color:var(--accent)">Wrong Seal</span></td>
+                <td>This QR code belongs to a different file</td>
+                <td><span class="status-badge info">NOT FOUND</span></td>
+              </tr>
+              <tr>
+                <td><span class="p-name" style="color:var(--accent)">Different Version</span></td>
+                <td>Checking an old draft against a final seal</td>
+                <td><span class="status-badge info">OUTDATED</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="comparison-footer-cards">
+          <div class="mini-card">
+            <h4>When to use File Matching?</h4>
+            <p>Ideal for verifying digital backups, legal drafts, and sensitive archives where two electronic copies are available.</p>
+          </div>
+          <div class="mini-card">
+            <h4>When to use QR Audit?</h4>
+            <p>Best for physical certifications, printed reports, and cross-platform verification where the original file is distributed.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROCESS TAB -->
+    <section id="tab-process" class="tab-panel">
+      <div class="process-container">
+        <div class="process-header">
+          <div class="hero-tag">System Architecture</div>
+          <h2>The DocChain Pipeline</h2>
+          <p>A 6-step cryptographic journey from raw bytes to immutable truth.</p>
+        </div>
+
+        <div class="interactive-pipeline">
+          <!-- Step 1 & 2 -->
+          <div class="pipeline-row">
+            <div class="pipeline-card" onclick="openStepModal(1)">
+              <div class="card-num">01</div>
+              <div class="card-body">
+                <h3>Secure Document Ingestion</h3>
+                <p>Local binary processing within a sandboxed browser environment.</p>
+                <span class="view-logic">View Detailed Logic →</span>
+              </div>
+            </div>
+            <div class="pipeline-arrow-h">→</div>
+            <div class="pipeline-card" onclick="openStepModal(2)">
+              <div class="card-num">02</div>
+              <div class="card-body">
+                <h3>Cryptographic Fingerprinting</h3>
+                <p>Generating a deterministic SHA-256 identifier for the asset.</p>
+                <span class="view-logic">View Detailed Logic →</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3 & 4 -->
+          <div class="pipeline-row">
+            <div class="pipeline-card" onclick="openStepModal(3)">
+              <div class="card-num">03</div>
+              <div class="card-body">
+                <h3>Ledger Anchoring (Mining)</h3>
+                <p>Computationally anchoring the hash into an immutable block sequence.</p>
+                <span class="view-logic">View Detailed Logic →</span>
+              </div>
+            </div>
+            <div class="pipeline-arrow-h">→</div>
+            <div class="pipeline-card" onclick="openStepModal(4)">
+              <div class="card-num">04</div>
+              <div class="card-body">
+                <h3>Seal Encapsulation (QR)</h3>
+                <p>Encoding cryptographic proof into high-resilience visual seals.</p>
+                <span class="view-logic">View Detailed Logic →</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 5 & 6 -->
+          <div class="pipeline-row">
+            <div class="pipeline-card" onclick="openStepModal(5)">
+              <div class="card-num">05</div>
+              <div class="card-body">
+                <h3>Integrity Validation</h3>
+                <p>Bit-level comparison protocols for digital asset verification.</p>
+                <span class="view-logic">View Detailed Logic →</span>
+              </div>
+            </div>
+            <div class="pipeline-arrow-h">→</div>
+            <div class="pipeline-card" onclick="openStepModal(6)">
+              <div class="card-num">06</div>
+              <div class="card-body">
+                <h3>Offline-to-Online Audit</h3>
+                <p>Seal-based verification for physical and distributed documents.</p>
+                <span class="view-logic">View Detailed Logic →</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MODAL OVERLAY -->
+    <div class="modal-overlay" id="modalOverlay" onclick="closeStepModal(event)">
+      <div class="modal-content" id="modalContent">
+        <div class="modal-header">
+          <div class="modal-num" id="modalStepNum">01</div>
+          <h2 id="modalStepTitle">Secure Document Ingestion</h2>
+        </div>
+        <div class="modal-body">
+          <p class="modal-desc" id="modalStepDesc">Securely uploading PDF/Image and checking for format integrity.</p>
+          
+          <div class="modal-section">
+            <h4><span class="sec-icon">📁</span> LIBRARIES & DEPENDENCIES</h4>
+            <div class="modal-tags" id="modalTags">
+              <!-- Tags added dynamically -->
+            </div>
+          </div>
+
+          <div class="modal-section">
+            <h4><span class="sec-icon">📋</span> EXECUTION PIPELINE</h4>
+            <div class="modal-steps" id="modalExecSteps">
+              <!-- Steps added dynamically -->
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-understood" onclick="closeStepModal()">Understood</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <span>DocChain · SHA-256 Blockchain Document Integrity</span>
+      <span>All processing is done locally in your browser. No files are uploaded to any server.</span>
+    </div>
+  </footer>
+
+  <!-- QR Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="js/blockchain.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
