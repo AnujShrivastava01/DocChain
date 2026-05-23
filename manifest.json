@@ -1,0 +1,18 @@
+{
+  "name": "DocChain — Blockchain Document Integrity",
+  "short_name": "DocChain",
+  "description": "Secure, local cryptographic document integrity using SHA-256 and decentralized ledger principles.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0a0a0f",
+  "theme_color": "#00e5ff",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "logo.png",
+      "sizes": "192x192 512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

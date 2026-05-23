@@ -99,12 +99,15 @@ function toggleTheme() {
 function updateThemeIcons(theme) {
   const sun = document.querySelector('.sun-icon');
   const moon = document.querySelector('.moon-icon');
+  const metaColor = document.getElementById('themeColorMeta');
   if (theme === 'light') {
     if (sun) sun.style.display = 'none';
     if (moon) moon.style.display = 'block';
+    if (metaColor) metaColor.setAttribute('content', '#f8fafc');
   } else {
     if (sun) sun.style.display = 'block';
     if (moon) moon.style.display = 'none';
+    if (metaColor) metaColor.setAttribute('content', '#0a0a0f');
   }
 }
 

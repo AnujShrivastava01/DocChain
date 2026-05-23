@@ -8,6 +8,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css"/>
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="logo.png">
+  <meta name="theme-color" content="#0a0a0f" id="themeColorMeta">
   <!-- QR Scanning Library -->
   <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
 </head>
@@ -29,6 +32,14 @@
       <a href="#process" class="nav-link" onclick="switchTab('process')">Process</a>
     </nav>
     <div class="header-actions">
+      <button id="pwaHeaderBtn" class="pwa-header-btn" onclick="openPwaModal()" style="display: none;" title="Install DocChain PWA">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="7 10 12 15 17 10"></polyline>
+          <line x1="12" y1="15" x2="12" y2="3"></line>
+        </svg>
+        <span>Install</span>
+      </button>
       <button id="themeToggle" class="theme-btn" onclick="toggleTheme()" title="Toggle Theme">
         <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="12" cy="12" r="5"></circle>
@@ -447,9 +458,71 @@
     </div>
   </footer>
 
+  <!-- PWA INSTALLATION MODAL -->
+  <div class="pwa-modal-overlay" id="pwaModalOverlay">
+    <div class="pwa-modal-content">
+      <button class="pwa-close-btn" onclick="closePwaModal()">&times;</button>
+      <div class="pwa-hero-glow"></div>
+      <div class="pwa-preview-container">
+        <div class="pwa-preview-logo-wrapper">
+          <img src="logo.png" alt="DocChain Logo" class="pwa-preview-logo">
+          <div class="pwa-pulse-ring"></div>
+        </div>
+      </div>
+      <h2 class="pwa-title">Install DocChain</h2>
+      <p class="pwa-tagline">Secure Cryptographic Trust App</p>
+      <p class="pwa-desc">Install DocChain to verify and anchor document integrity completely offline, with instant desktop/mobile access and full native sandbox support.</p>
+      
+      <div class="pwa-features">
+        <div class="pwa-feature-item">
+          <span class="pwa-feature-icon">🛡️</span>
+          <div class="pwa-feature-text">
+            <strong>100% Local & Secure</strong>
+            <span>Your files never leave your system</span>
+          </div>
+        </div>
+        <div class="pwa-feature-item">
+          <span class="pwa-feature-icon">⚡</span>
+          <div class="pwa-feature-text">
+            <strong>Offline Verification</strong>
+            <span>Works flawlessly without internet access</span>
+          </div>
+        </div>
+        <div class="pwa-feature-item">
+          <span class="pwa-feature-icon">⬡</span>
+          <div class="pwa-feature-text">
+            <strong>Instant Access</strong>
+            <span>Launch directly from your home screen or dock</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="pwa-actions">
+        <button class="btn-pwa-install" id="modalInstallBtn" onclick="triggerPwaInstall()">Install App</button>
+        <button class="btn-pwa-cancel" onclick="closePwaModal()">Maybe Later</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PWA FLOATING TOAST -->
+  <div class="pwa-toast" id="pwaInstallToast">
+    <div class="pwa-toast-icon-wrap">
+      <img src="logo.png" alt="DocChain Logo" class="pwa-toast-logo">
+    </div>
+    <div class="pwa-toast-body">
+      <div class="pwa-toast-title">Install DocChain PWA</div>
+      <div class="pwa-toast-desc">Add DocChain to your home screen for rapid, 100% secure offline access.</div>
+      <div class="pwa-toast-actions">
+        <button class="btn-toast-install" onclick="openPwaModal()">Install</button>
+        <button class="btn-toast-dismiss" onclick="dismissPwaToast()">Dismiss</button>
+      </div>
+    </div>
+  </div>
+
   <!-- QR Library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script src="js/blockchain.js"></script>
   <script src="js/app.js"></script>
+  <script src="js/pwa.js"></script>
 </body>
 </html>
