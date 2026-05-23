@@ -98,6 +98,8 @@ function hideInstallUI() {
 
   const modal = document.getElementById('pwaModalOverlay');
   if (modal) modal.classList.remove('active');
+  
+  if (window.lenis) window.lenis.start(); // Restore scrolling
 }
 
 // Open installation details modal (Premium Holographic Preview)
@@ -110,6 +112,7 @@ function openPwaModal() {
   if (modal) {
     modal.classList.add('active');
     document.body.style.overflow = 'hidden'; // Lock background scrolling
+    if (window.lenis) window.lenis.stop(); // Prevent background scroll
   }
 }
 
@@ -120,6 +123,7 @@ function closePwaModal(e) {
   if (modal) {
     modal.classList.remove('active');
     document.body.style.overflow = ''; // Restore background scrolling
+    if (window.lenis) window.lenis.start(); // Restore background scroll
   }
 }
 

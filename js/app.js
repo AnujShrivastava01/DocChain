@@ -82,6 +82,40 @@ const pipelineData = {
 
 // ===== INITIALIZATION =====
 document.addEventListener('DOMContentLoaded', () => {
+  // Initialize Lenis Smooth Scroll
+  if (typeof Lenis !== 'undefined') {
+    window.lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      direction: 'vertical',
+      gestureDirection: 'vertical',
+      smooth: true,
+      mouseMultiplier: 1,
+      smoothTouch: false,
+      touchMultiplier: 2,
+    });
+
+    function raf(time) {
+      window.lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    // Support smooth scroll to anchors
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        const href = this.getAttribute('href');
+        if (this.classList.contains('nav-link') || this.getAttribute('onclick')) return;
+        
+        e.preventDefault();
+        const target = document.querySelector(href);
+        if (target) {
+          window.lenis.scrollTo(target, { offset: -80 });
+        }
+      });
+    });
+  }
+
   const savedTheme = localStorage.getItem('theme') || 'dark';
   document.body.className = savedTheme + '-theme';
   updateThemeIcons(savedTheme);
@@ -136,6 +170,8 @@ function openStepModal(stepId) {
   document.getElementById('modalOverlay').classList.add('active');
   document.querySelector('header').classList.add('hidden'); // Hide navbar
   document.body.style.overflow = 'hidden'; // Prevent scroll
+  
+  if (window.lenis) window.lenis.stop(); // Prevent background scroll
 }
 
 function closeStepModal(e) {
@@ -143,6 +179,8 @@ function closeStepModal(e) {
   document.getElementById('modalOverlay').classList.remove('active');
   document.querySelector('header').classList.remove('hidden'); // Show navbar
   document.body.style.overflow = '';
+  
+  if (window.lenis) window.lenis.start(); // Restore background scroll
 }
 
 // ===== TAB SWITCHING =====
@@ -166,7 +204,11 @@ function switchTab(tabId) {
   }
 
   // Auto-scroll to top when switching
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (window.lenis) {
+    window.lenis.scrollTo(0, { duration: 0.8 });
+  } else {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 }
 
 // ===== DRAG AND DROP =====
