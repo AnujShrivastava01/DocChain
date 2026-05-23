@@ -1,4 +1,4 @@
-const CACHE_NAME = 'docchain-v1';
+const CACHE_NAME = 'docchain-v2';
 const ASSETS = [
   './',
   './index.html',
@@ -7,6 +7,7 @@ const ASSETS = [
   './js/blockchain.js',
   './js/pwa.js',
   './logo.png',
+  './pwa-icon.png',
   './manifest.json',
   'https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap',
   'https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js',
