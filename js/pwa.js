@@ -99,6 +99,7 @@ function hideInstallUI() {
   const modal = document.getElementById('pwaModalOverlay');
   if (modal) modal.classList.remove('active');
   
+  document.body.style.overflow = ''; // Restore background scrolling
   if (window.lenis) window.lenis.start(); // Restore scrolling
 }
 
